@@ -4,9 +4,7 @@ class Solution {
         for(int i=0; i<nums.length; i++) {
             sum += nums[i];
 
-            if(sum > mxm) {
-                mxm = sum;
-            }
+            mxm = (sum > mxm) ? sum : mxm ;
             if(sum < 0) {
                 sum = 0;
             }
