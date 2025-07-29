@@ -1,24 +1,31 @@
 class Solution {
     public void rotate(int[][] matrix) {
         int n = matrix.length;
-        HashMap<Integer, Integer> mp = new HashMap<>();
-        int count = 0;
 
-        for(int j=0; j<n; j++) {
-            for(int i=n-1; i>=0; i--) {
-                mp.put(count , matrix[i][j]);
-                count++;
-            } 
-        }
-        int temp = 0;
-
-        for(int i=0; i<n; i++) {
-            for(int j=0; j<n; j++) {
-                matrix[i][j] = mp.get(temp);
-                temp++;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
             }
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            reverseRow(matrix[i]);
         }
 
         return;
     }
+
+    public void reverseRow(int[] row) {
+        int l = 0, r = row.length - 1;
+        while (l < r) {
+            int temp = row[l];
+            row[l] = row[r];
+            row[r] = temp;
+            l++;
+            r--;
+        }
+    }
+
 }
