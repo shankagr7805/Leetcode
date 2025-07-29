@@ -3,14 +3,10 @@ class Solution {
         int n = nums.length;
         HashSet<Integer> s = new HashSet<>();
 
-        if(n == 0) {
-            return 0; 
-        }
-
         for(int i=0; i<n; i++) {
             s.add(nums[i]);
         }
-        int mx = 1 ;
+        int mx = 0 ;
 
         for(int i : s) {
             if(!s.contains(i-1)) {
