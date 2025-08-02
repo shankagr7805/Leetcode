@@ -1,21 +1,25 @@
 class Solution {
+    public int first_element(int[] nums, int target) {
+        for(int i=0; i<nums.length; i++) {
+            if(nums[i] == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public int last_element(int[] nums, int target) {
+        for(int i = nums.length - 1; i>=0; i--) {
+            if(nums[i] == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
     public int[] searchRange(int[] nums, int target) {
-        int n = nums.length;
-        int first = -1; int last = -1;
-        int count = 0;
-        for(int i=0; i<n; i++) {
-            if(nums[i] == target) {
-                count++;
-            }
-        }
-        for(int i = 0; i<n ; i++) {
-            if(nums[i] == target) {
-                first = i ;
-                last = i + (count-1) ;   
-                break;
-            }
-        }
-
-        return new int[] {first , last};
+        int[] ans = new int[2];
+        ans[0] = first_element(nums, target);
+        ans[1] = last_element(nums, target) ;
+        
+        return ans;
     }
 }
