@@ -7,18 +7,13 @@ class Solution {
             slow = slow.next;
             fast = fast.next.next;
         }
-
         ListNode secHalf = reverse(slow);
-
         ListNode p1 = head, p2 = secHalf;
         while (p2 != null) {
-            if (p1.val != p2.val) {
-                return false;
-            }
+            if (p1.val != p2.val) return false;
             p1 = p1.next;
             p2 = p2.next;
         }
-        
         return true;
     }
 
