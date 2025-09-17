@@ -1,46 +1,36 @@
 class Solution {
+    private static final int INT_MAX = Integer.MAX_VALUE;
+    private static final int INT_MIN = Integer.MIN_VALUE;
+
     public int myAtoi(String s) {
-        if (s == null || s.isEmpty())
-            return 0;
+        if (s == null || s.isEmpty()) return 0;
+        s = s.trim(); 
+        if (s.isEmpty()) return 0;
 
-        s = s.trim();
-        if (s.isEmpty())
-            return 0;
+        int sign = 1;
+        int index = 0;
 
-        boolean neg = false;
-        int i = 0;
-        if (s.charAt(0) == '-') {
-            neg = true;
-            i++;
-        } else if (s.charAt(0) == '+') {
-            i++;
+        if (s.charAt(0) == '-' || s.charAt(0) == '+') {
+            sign = (s.charAt(0) == '-') ? -1 : 1;
+            index++;
         }
 
-        while (i < s.length() && s.charAt(i) == '0') {
-            i++;
+        return recurse(s, index, 0L, sign); 
+    }
+
+    private int recurse(String s, int i, long num, int sign) {
+        if (i >= s.length() || !Character.isDigit(s.charAt(i))) {
+            long val = num * sign;
+            if (val > INT_MAX) return INT_MAX;
+            if (val < INT_MIN) return INT_MIN;
+            return (int) val;
         }
 
-        int idx = i;
+        num = num * 10 + (s.charAt(i) - '0');
 
-        while (idx < s.length() && Character.isDigit(s.charAt(idx))) {
-            idx++;
-        }
+        if (sign == 1 && num > INT_MAX) return INT_MAX;
+        if (sign == -1 && -num < INT_MIN) return INT_MIN;
 
-        if (idx == i)
-            return 0;
-
-        String num = s.substring(i, idx);
-        long ans = 0;
-
-        for (char c : num.toCharArray()) {
-            ans = ans * 10 + (c - '0');
-            if (!neg && ans > Integer.MAX_VALUE) {
-                return Integer.MAX_VALUE;
-            }
-            if (neg && -ans < Integer.MIN_VALUE) {
-                return Integer.MIN_VALUE;
-            }
-        }
-        return (neg) ? (int) -ans : (int) ans;
+        return recurse(s, i + 1, num, sign);
     }
 }
