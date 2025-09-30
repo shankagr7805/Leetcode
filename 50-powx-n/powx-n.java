@@ -1,23 +1,18 @@
 class Solution {
-    private double power(double x, long n) {
-        if(n == 0) {
-          return 1;  
-        } else if(n == 1) {
-            return x;
-        } else {
-            double half = power(x , n/2);
+    public double myPow(double x, long n) {
+        double ans = 1.0;
+        long s = n ;
+        n = Math.abs(n) ;
+        while(n > 0) {
             if(n % 2 == 0) {
-                return half * half ;
+                n = n / 2;
+                x = x * x ;
             } else {
-                return x * half * half ;
+                ans = ans * x ;
+                n = n - 1;
             }
         }
-    }
-    public double myPow(double x, long n) {
-        if(n<0) {
-            return 1 / (x * power(x, -(n + 1)));
-        }
-        
-        return power(x , n) ;
+        if(s < 0) ans = 1.0 / ans ;
+        return ans ;
     }
 }
