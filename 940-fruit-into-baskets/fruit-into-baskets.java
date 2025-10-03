@@ -8,11 +8,13 @@ class Solution {
             if (mp.size() <= 2) {
                 mx = Math.max(mx, r - l + 1);
             } else {
-                mp.put(fruits[l], mp.get(fruits[l]) - 1);
-                if (mp.get(fruits[l]) == 0) {
-                    mp.remove(fruits[l]);
-                }
-                l++;
+                while(mp.size() > 2) {
+                    mp.put(fruits[l], mp.get(fruits[l]) - 1);
+                    if (mp.get(fruits[l]) == 0) {
+                        mp.remove(fruits[l]);
+                    }
+                    l++;
+                } 
             }
             r++;
         }
