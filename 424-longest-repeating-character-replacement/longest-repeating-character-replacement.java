@@ -10,9 +10,7 @@ class Solution {
                 mp[s.charAt(l) - 'A']--;
                 l++;
             }
-            if((r-l+1) - cnt <= k) {
-                max_len = Math.max(r-l+1 , max_len);
-            }
+            max_len = Math.max(r-l+1 , max_len);
             r++;
         }
         return max_len;
