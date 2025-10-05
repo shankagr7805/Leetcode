@@ -5,9 +5,7 @@ class Solution {
 
         for(int i=0; i<s.length(); i++) {
             last[s.charAt(i) - 'a'] = i;
-            if(last[0] != -1 && last[1] != -1 && last[2] != -1) {
-                cnt = cnt + (1 + Math.min(Math.min(last[0] , last[1]) , last[2])) ;
-            }
+            cnt = cnt + (1 + Math.min(Math.min(last[0] , last[1]) , last[2])) ;
         }
         return cnt;
     }
