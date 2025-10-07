@@ -1,40 +1,23 @@
 class Solution {
-    private boolean same(HashMap<Character, Integer> mp, HashMap<Character, Integer> t_mp) {
-        boolean isSame = true;
-
-        for (Map.Entry<Character, Integer> entry : t_mp.entrySet()) {
-            char key = entry.getKey();
-            int val = entry.getValue();
-
-            if (!mp.containsKey(key) || mp.get(key)<val) {
-                isSame = false;
-                break;
-            }
-        }
-        return isSame;
-    }
-
     public String minWindow(String s, String t) {
-        int l=0, r=0, min_len = Integer.MAX_VALUE , start = 0;
-        HashMap<Character, Integer> mp = new HashMap<>();
-        HashMap<Character, Integer> t_mp = new HashMap<>();
-
-        for(char c : t.toCharArray()) {
-            t_mp.put(c , t_mp.getOrDefault(c , 0) + 1);
+        int l=0, r=0, min_len = Integer.MAX_VALUE , start = 0 , cnt = 0;
+        int[] f = new int[256];
+        for(int i=0; i<t.length(); i++) {
+            f[t.charAt(i)]++;
         }
-        while(r < s.length()) {
-            mp.put(s.charAt(r) , mp.getOrDefault(s.charAt(r) , 0) + 1);
-
-            while(same(mp , t_mp)) {
-                if (r - l + 1 < min_len) {
-                    min_len = r - l + 1;
+        while(r < s.length()) {  
+            if(f[s.charAt(r)] > 0) cnt++;
+            f[s.charAt(r)]--;
+            
+            while(cnt == t.length()) {
+                if(r-l+1 < min_len) {
+                    min_len = r-l+1;
                     start = l;
-                }
-                mp.put(s.charAt(l), mp.get(s.charAt(l)) - 1);
-                if (mp.get(s.charAt(l)) == 0)
-                    mp.remove(s.charAt(l));
-                l++;
-            }
+                } 
+                f[s.charAt(l)]++;
+                if(f[s.charAt(l)] > 0) cnt--;
+                l++;       
+            } 
             r++;
         }
         return min_len == Integer.MAX_VALUE ? "" : s.substring(start, start + min_len);
