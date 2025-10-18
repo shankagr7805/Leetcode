@@ -2,24 +2,16 @@ import java.util.*;
 
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> map = new HashMap<>();
-        
-        for (String s : strs) {
-            int[] freq = new int[26];
-            for (char c : s.toCharArray()) {
-                freq[c - 'a']++;
+        Map<String, List<String>> mp = new HashMap<>();
+        for (String word : strs) {
+            char[] chars = word.toCharArray();
+            Arrays.sort(chars);
+            String key = new String(chars);
+            if (!mp.containsKey(key)) {
+                mp.put(key, new ArrayList<String>());
             }
-
-            StringBuilder keyBuilder = new StringBuilder();
-            for (int count : freq) {
-                keyBuilder.append('#');
-                keyBuilder.append(count);
-            }
-            String key = keyBuilder.toString();
-
-            map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+            mp.get(key).add(word);
         }
-        
-        return new ArrayList<>(map.values());
+        return new ArrayList<>(mp.values());
     }
 }
