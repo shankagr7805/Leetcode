@@ -1,24 +1,20 @@
-import java.util.Arrays;
-
 class Solution {
     public int eraseOverlapIntervals(int[][] intervals) {
-        if (intervals == null || intervals.length == 0) return 0;
 
-        Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
+        if (intervals == null || intervals.length == 0) return -1;
+        Arrays.sort(intervals, (a,b) -> a[1]-b[1]);
 
-        int keep = 1; 
-        int prevEnd = intervals[0][1];
+        int removed = 0;
+        int[] prev = intervals[0];
 
         for (int i = 1; i < intervals.length; i++) {
-            int start = intervals[i][0];
-            int end = intervals[i][1];
+            int[] curr = intervals[i];
 
-            if (start >= prevEnd) {
-                keep++;
-                prevEnd = end;
-            } 
+            if( prev[1] > curr[0]) removed++;
+            else 
+                prev = curr;
         }
-        
-        return intervals.length - keep;
+
+        return removed;
     }
 }
