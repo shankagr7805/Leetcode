@@ -1,13 +1,15 @@
 class Solution {
     public long removeZeros(long n) {
-        StringBuilder sb = new StringBuilder();
-        while(n>0) {
-            if(n%10 != 0) {
-                sb.append(n%10);
+        long ans = 0;
+        long ten = 1;
+        while (n > 0) {
+            long r = (n%10);
+            if (r != 0) {
+                ans = ans + ten*r;
+                ten = (ten*10);
             }
-            n /= 10;
+            n = n/10;
         }
-
-        return Long.parseLong(sb.reverse().toString());
+        return ans;
     }
 }
