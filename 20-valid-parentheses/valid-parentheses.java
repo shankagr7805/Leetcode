@@ -6,9 +6,7 @@ class Solution {
             if(c == '(' || c == '{' || c == '[') {
                 st.push(c);
             } else {
-                if(st.isEmpty()) {
-                    return false;
-                }
+                if(st.isEmpty()) return false;
                 else if(c == ')' && st.peek()=='(') st.pop();
                 else if(c == '}' && st.peek()=='{') st.pop();
                 else if(c == ']' && st.peek()=='[') st.pop();
