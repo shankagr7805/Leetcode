@@ -1,47 +1,30 @@
-class MinStack {
-        static{
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try (FileWriter writer = new FileWriter("display_runtime.txt")) {
-                writer.write("0");
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
-        }));
-    }
+import java.util.*;
 
-    Stack<Integer> stack;
-    Stack<Integer> minStack;
+class MinStack {
+
+    private Stack<int[]> st;
 
     public MinStack() {
-        stack = new Stack<>();
-        minStack = new Stack<>();
+        st = new Stack<>();
     }
-    
+
     public void push(int val) {
-        stack.push(val);
-
-        if (minStack.isEmpty() || val <= minStack.peek()) {
-            minStack.push(val);
-        }
+        int mnm = st.isEmpty() ? val : Math.min(val, st.peek()[1]);
+        st.push(new int[]{val, mnm});
     }
-    
+
     public void pop() {
-        int removed = stack.pop();
+        st.pop();
+    }
 
-        if (removed == minStack.peek()) {
-            minStack.pop();
-        }
-    }
-    
     public int top() {
-        return stack.peek();
+        return st.peek()[0];
     }
-    
+
     public int getMin() {
-        return minStack.peek();
+        return st.peek()[1];
     }
 }
-
 
 /**
  * Your MinStack object will be instantiated and called as such:
