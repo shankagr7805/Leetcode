@@ -1,6 +1,9 @@
 class Solution {
     public int[] asteroidCollision(int[] asteroids) {
-        Stack<Integer> st = new Stack<>();
+        if (asteroids.length == 0) {
+            return asteroids;
+        }
+        Deque<Integer> st = new ArrayDeque<>();
 
         for (int a : asteroids) {
             boolean destroyed = false;
