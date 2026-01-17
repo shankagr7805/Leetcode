@@ -10,7 +10,7 @@ class Solution {
 
         Stack<Integer> st = new Stack<>();
 
-        // Previous Smaller Element distance (strictly smaller)
+        // Previous Smaller Element (strictly smaller)
         for (int i = 0; i < n; i++) {
             while (!st.isEmpty() && arr[st.peek()] > arr[i]) {
                 st.pop();
@@ -21,6 +21,7 @@ class Solution {
 
         st.clear();
 
+        // Next smaller element.
         for (int i = n - 1; i >= 0; i--) {
             while (!st.isEmpty() && arr[st.peek()] >= arr[i]) {
                 st.pop();
