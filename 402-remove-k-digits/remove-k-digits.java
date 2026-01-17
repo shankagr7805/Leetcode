@@ -19,10 +19,14 @@ class Solution {
         }
 
         StringBuilder sb = new StringBuilder();
-        while(!st.isEmpty()) {
-            sb.append(st.pop());
+        for (char c : st) {
+            sb.append(c);
         }
-        String res = sb.reverse().toString();
-        return (res.equals("0")) ? "0" : res.replaceAll("^0+(?!$)", "");
+
+        while (sb.length() > 1 && sb.charAt(0) == '0') {
+            sb.deleteCharAt(0);
+        }
+
+        return sb.length() == 0 ? "0" : sb.toString();
     }
 }
