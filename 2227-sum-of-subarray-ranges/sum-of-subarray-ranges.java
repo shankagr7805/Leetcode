@@ -1,74 +1,69 @@
 import java.util.*;
 class Solution {
-    private long sumMins(int[] nums) {
+    public long subArrayRanges(int[] nums) {
         int n = nums.length;
-        int[] left = new int[n];
-        int[] right = new int[n];
 
+        long sumMax = 0;
+        long sumMin = 0;
+
+        // -------- SUM OF SUBARRAY MINIMUMS --------
         Stack<Integer> st = new Stack<>();
+        int[] leftMin = new int[n];
+        int[] rightMin = new int[n];
 
-        // Previous Smaller Element (strictly smaller)
+        // Previous smaller (strictly smaller)
         for (int i = 0; i < n; i++) {
             while (!st.isEmpty() && nums[st.peek()] > nums[i]) {
                 st.pop();
             }
-            left[i] = st.isEmpty() ? (i + 1) : (i - st.peek());
+            leftMin[i] = st.isEmpty() ? (i + 1) : (i - st.peek());
             st.push(i);
         }
 
         st.clear();
 
-        // Next smaller element.
+        // Next smaller or equal
         for (int i = n - 1; i >= 0; i--) {
             while (!st.isEmpty() && nums[st.peek()] >= nums[i]) {
                 st.pop();
             }
-            right[i] = st.isEmpty() ? (n - i) : (st.peek() - i);
+            rightMin[i] = st.isEmpty() ? (n - i) : (st.peek() - i);
             st.push(i);
         }
 
-        long ans = 0;
         for (int i = 0; i < n; i++) {
-            ans += (long) nums[i] * left[i] * right[i];
+            sumMin += (long) nums[i] * leftMin[i] * rightMin[i];
         }
 
-        return ans;
-    }
-    private long sumMaxs(int[] nums) {
-        int n = nums.length;
-        int[] left = new int[n];
-        int[] right = new int[n];
+        // -------- SUM OF SUBARRAY MAXIMUMS --------
+        st.clear();
+        int[] leftMax = new int[n];
+        int[] rightMax = new int[n];
 
-        Stack<Integer> st = new Stack<>();
-
-        // Previous Greater Element (strictly smaller)
+        // Previous greater (strictly greater)
         for (int i = 0; i < n; i++) {
             while (!st.isEmpty() && nums[st.peek()] < nums[i]) {
                 st.pop();
             }
-            left[i] = st.isEmpty() ? (i + 1) : (i - st.peek());
+            leftMax[i] = st.isEmpty() ? (i + 1) : (i - st.peek());
             st.push(i);
         }
 
         st.clear();
 
-        // Next Greater element.
+        // Next greater or equal
         for (int i = n - 1; i >= 0; i--) {
             while (!st.isEmpty() && nums[st.peek()] <= nums[i]) {
                 st.pop();
             }
-            right[i] = st.isEmpty() ? (n - i) : (st.peek() - i);
+            rightMax[i] = st.isEmpty() ? (n - i) : (st.peek() - i);
             st.push(i);
         }
 
-        long ans = 0;
         for (int i = 0; i < n; i++) {
-            ans += (long) nums[i] * left[i] * right[i];
+            sumMax += (long) nums[i] * leftMax[i] * rightMax[i];
         }
 
-        return ans;
-    }
-    public long subArrayRanges(int[] nums) {
-        return (sumMaxs(nums) - sumMins(nums));
+        return sumMax - sumMin;
     }
 }
