@@ -2,6 +2,8 @@ class Solution {
     public long subArrayRanges(int[] arr) {
         long sum = 0; int n = arr.length;
         Deque<Integer> stack = new ArrayDeque<>();
+
+        //Subtracting sum of 
         for(int i = 0; i <= n; i++){
             while(!stack.isEmpty() && (i == n || arr[stack.peek()] >= arr[i])){
                 int el = stack.pop();
