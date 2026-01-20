@@ -30,8 +30,7 @@ class Solution {
         for(int i=0; i<n; i++) {
             int preSum = 0;
             for(int j=0; j<m; j++) {  
-                if(matrix[j][i] == '1') preSum++;
-                else preSum = 0;
+                preSum = (matrix[j][i] == '1') ? preSum + 1 : 0;
                 preMatrix[j][i] = preSum;
             }
         }
