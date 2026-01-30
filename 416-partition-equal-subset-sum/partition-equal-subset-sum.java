@@ -12,7 +12,7 @@ class Solution {
                 boolean notTake = prev[j];
                 boolean take = false;
                 if(nums[i] <= j) take = prev[j-nums[i]];
-                curr[j] = take | notTake ;
+                curr[j] = take || notTake ;
             }
             prev = curr;
         }
