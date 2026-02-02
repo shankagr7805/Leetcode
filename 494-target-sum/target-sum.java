@@ -1,15 +1,22 @@
 class Solution {
-    private int f(int idx, int k, int[] nums) {
-        int n = nums.length; int cnt = 0; int sum = 0;
-        if(idx == n) {
-            return k == 0 ? 1 : 0;
-        }
-        int plus = f(idx + 1, k - nums[idx], nums);
-        int minus = f(idx + 1, k + nums[idx], nums);
-
-        return plus + minus;
-    }
     public int findTargetSumWays(int[] nums, int target) {
-        return f(0, target, nums);
+        int total = 0;
+        for (int x : nums) total += x;
+
+        if (Math.abs(target) > total) return 0;
+        if ((target + total) % 2 != 0) return 0;
+
+        int sum = (target + total) / 2;
+
+        int[] dp = new int[sum + 1];
+        dp[0] = 1;
+
+        for (int num : nums) {
+            for (int j = sum; j >= num; j--) {
+                dp[j] += dp[j - num];
+            }
+        }
+
+        return dp[sum];
     }
 }
