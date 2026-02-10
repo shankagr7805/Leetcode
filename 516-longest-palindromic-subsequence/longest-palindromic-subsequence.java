@@ -1,27 +1,26 @@
 class Solution {
-    public int lcs( String s, String t) {
-        int n1 = s.length();
-        int n2 = t.length();
-        int[] prev = new int[n2+1];
-        for(int i=1; i<=n1; i++) {
-            int[] curr = new int[n2+1];
-            for(int j=1; j<=n2; j++) {
-                if(t.charAt(j-1) == s.charAt(i-1)) {
-                    curr[j] = prev[j-1] + 1;
-                } else {
-                    curr[j] = Math.max(curr[j-1], prev[j]);
-                }
-            }
-            prev = curr;
+    private int dp[][];
+
+    private int f(String s, int i, int j) {
+        if (i > j)
+            return 0;
+        if (i == j)
+            return 1;
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        if (s.charAt(i) == s.charAt(j)) {
+            dp[i][j] = 2 + f(s, i + 1, j - 1);
+        } else {
+            dp[i][j] = Math.max(f(s, i + 1, j), f(s, i, j - 1));
         }
-        return prev[n2];
+        return dp[i][j];
     }
+
     public int longestPalindromeSubseq(String s) {
-        StringBuilder sb = new StringBuilder();
-        for(int i=s.length()-1; i>=0; i--) {
-            sb.append(s.charAt(i));
-        }
-        String t = sb.toString();
-        return lcs(s, t);
+        int n = s.length();
+        dp = new int[n][n];
+        for (int i = 0; i < n; i++)
+            Arrays.fill(dp[i], -1);
+        return f(s, 0, n - 1);
     }
 }
