@@ -1,33 +1,22 @@
-public class Solution {
-    public int minDistance(String word1, String word2) {
-        int m = word1.length();
-        int n = word2.length();
-        
-        int[][] dp = new int[m + 1][n + 1];
-        
-        // Base cases
-        for (int i = 0; i <= m; i++) {
-            dp[i][0] = i;  // Deleting all characters from word1
-        }
-        for (int j = 0; j <= n; j++) {
-            dp[0][j] = j;  // Inserting all characters of word2
-        }
-        
-        // Fill dp table
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1];  // Characters match
+class Solution {
+    public int minDistance(String str1, String str2) {
+        int n = str1.length();
+        int m = str2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for(int i = 0; i <= n; i++) dp[i][0] = i;
+        for(int j = 0; j <= m; j++) dp[0][j] = j;
+
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= m; j++) {
+
+                if(str1.charAt(i-1) == str2.charAt(j-1)) {
+                    dp[i][j] = dp[i-1][j-1];
                 } else {
-                    dp[i][j] = 1 + Math.min(
-                        dp[i - 1][j],              // Delete
-                        Math.min(dp[i][j - 1],     // Insert
-                                 dp[i - 1][j - 1]) // Replace
-                    );
+                    dp[i][j] = 1 + Math.min(dp[i-1][j-1], Math.min(dp[i-1][j], dp[i][j-1]));
                 }
             }
         }
-        
-        return dp[m][n];
+
+        return dp[n][m];
     }
 }
