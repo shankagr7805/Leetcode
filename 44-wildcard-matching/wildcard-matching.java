@@ -1,21 +1,33 @@
 class Solution {
+    private boolean f(String s, String p, int i, int j, int[][] dp) {
+        if(i<0 && j<0) return true;
+        if(j<0) return false;
+        if(i < 0) {
+            for(int k = 0; k <= j; k++) {
+                if(p.charAt(k) != '*') return false;
+            }
+            return true;
+        }
+        if(dp[i][j] != -1) return dp[i][j] == 1;
+        boolean ans = false;
+        if(p.charAt(j) == '*') {
+            ans = f(s, p, i, j-1, dp) || f(s, p, i-1, j, dp);
+        }
+        if (p.charAt(j) == '?' || s.charAt(i) == p.charAt(j)) ans = f(s, p, i-1, j-1, dp);
+        
+        dp[i][j] = ans ? 1 : 0;
+
+        return ans;
+    }
     public boolean isMatch(String s, String p) {
         int n = s.length();
         int m = p.length();
-        boolean[][] dp = new boolean[n+1][m+1];
-        dp[0][0] = true;
-        for(int i=1; i<=n; i++) dp[i][0] = false;
-        for(int j=1; j<=m; j++) {
-            if(p.charAt(j-1) == '*') dp[0][j] = dp[0][j-1];
-            else dp[0][j] = false;
-        }
-        for(int i=1; i<=n; i++) {
-            for(int j=1; j<=m; j++) {
-                if(p.charAt(j-1) == '*') dp[i][j] = dp[i][j-1] || dp[i-1][j];
-                else if (p.charAt(j-1) == '?' || s.charAt(i-1) == p.charAt(j-1)) dp[i][j] = dp[i-1][j-1];
-                else dp[i][j] = false;
+        int[][] dp = new int[n][m];
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<m; j++) {
+                dp[i][j] = -1;
             }
         }
-        return dp[n][m];
+        return f(s, p, n-1, m-1, dp);
     }
 }
