@@ -2,8 +2,8 @@ class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
         int[][] after = new int[2][3];
+        int[][] curr = new int[2][3];
         for(int i=n-1; i>=0; i--){
-            int[][] curr = new int[2][3];
             for(int j=0; j<2; j++) {
                 for(int k=1; k<3; k++) {
                     // Buy
