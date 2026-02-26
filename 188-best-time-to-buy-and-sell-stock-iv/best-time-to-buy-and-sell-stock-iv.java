@@ -16,7 +16,6 @@ class Solution {
             for (int x = 0; x < 2; x++) {
                 System.arraycopy(curr[x], 0, after[x], 0, k+1);
             }
-            after = curr;
         }
         return after[1][k];
     }
