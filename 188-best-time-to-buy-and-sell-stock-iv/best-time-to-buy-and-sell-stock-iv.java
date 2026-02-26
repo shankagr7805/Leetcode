@@ -13,9 +13,7 @@ class Solution {
                     }
                 }
             }
-            int[][] temp = after;
             after = curr;
-            curr = temp;
         }
         return after[1][k];
     }
