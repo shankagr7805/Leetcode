@@ -26,6 +26,7 @@ class Solution {
             last = hash[last];
             lis.add(nums[last]);
         }
+        Collections.reverse(lis);
         return lis;
     }
 }
