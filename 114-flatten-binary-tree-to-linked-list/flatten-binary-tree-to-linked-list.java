@@ -14,20 +14,20 @@
  * }
  */
 class Solution {
-    private void preOrder(TreeNode root, List<TreeNode> pre) {
-        if(root == null) return;  
-        pre.add(root);
-        preOrder(root.left, pre);
-        preOrder(root.right, pre);
-    }
     public void flatten(TreeNode root) {
-        if(root == null) return;
-        List<TreeNode> pre = new ArrayList<>();
-        preOrder(root, pre);
-        
-        for(int i=0; i<pre.size()-1; i++) {
-            pre.get(i).left = null;
-            pre.get(i).right = pre.get(i+1);
+        if(root == null || (root.left == null && root.right == null)) return;
+        Stack<TreeNode> st = new Stack<>();
+        st.push(root);
+
+        while(!st.isEmpty()) {
+            TreeNode curr = st.pop();
+            if(curr.right != null) st.push(curr.right);
+            if(curr.left != null) st.push(curr.left);
+            if(!st.isEmpty()) {
+                curr.right = st.peek();
+            }
+            curr.left = null;
         }
+        return;
     }
 }
