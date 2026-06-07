@@ -14,15 +14,30 @@
  * }
  */
 class Solution {
-    private void pre(TreeNode root, List<Integer> ls) {
-        if(root == null) return;
-        ls.add(root.val);
-        pre(root.left, ls);
-        pre(root.right, ls);
-    }
     public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> ans = new ArrayList<>();
-        pre(root, ans);
+        List<Integer> ans = new ArrayList<Integer>();
+        if(root == null) return ans;
+        TreeNode node = root;
+        
+        while(node != null) {
+            if(node.left == null) {
+                ans.add(node.val);
+                node = node.right;
+            } else {
+                TreeNode prev = node.left;
+                while(prev.right != null && prev.right != node) {
+                    prev = prev.right;
+                }
+                if(prev.right == null) {
+                    prev.right = node;
+                    ans.add(node.val);
+                    node = node.left;
+                } else {
+                    prev.right = null;
+                    node = node.right;
+                }
+            }
+        }
         return ans;
     }
 }
