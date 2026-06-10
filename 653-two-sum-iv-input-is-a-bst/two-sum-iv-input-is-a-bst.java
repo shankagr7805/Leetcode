@@ -14,32 +14,22 @@
  * }
  */
 class Solution {
-    private List<Integer> ans = new ArrayList<>();
-
-    private List<Integer> in(TreeNode root) {
-        if(root == null) return ans;
-        in(root.left);
+    private void in(List<Integer> ans,TreeNode root) {
+        if(root == null) return ;
+        in(ans, root.left);
         ans.add(root.val);
-        in(root.right);
-
-        return ans;
+        in(ans, root.right);
     }
 
-    private boolean bs(TreeNode root, int k, int i) {
-        int low = 0; int high = ans.size()-1;
-        while(low <= high) {
-            int mid = low + (high - low) / 2;
-            System.out.println(low + " " + mid + " " + high);
-            if(k == ans.get(mid) && mid != i) return true;
-            else if(k > ans.get(mid)) low = mid + 1;
-            else high = mid - 1;
-        }
-        return false;
-    }
     public boolean findTarget(TreeNode root, int k) {
-        ans = in(root);
-        for(int i=0; i<ans.size(); i++) {
-            if(bs(root, k-ans.get(i), i)) return true;
+        List<Integer> ans = new ArrayList<>();
+        in(ans, root);
+        int l = 0; int r = ans.size()-1;
+        while(l<r) {
+            int curr = ans.get(l) + ans.get(r);
+            if(curr == k) return true;
+            else if(curr < k) l++;
+            else r--;
         }
         return false;
     }
