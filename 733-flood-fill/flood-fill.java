@@ -13,7 +13,6 @@ class Solution {
         }
     }
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        if(color == image[sr][sc]) return image;
         int in = image[sr][sc];
         int[][] ans = image;
         int dr[] = {-1, 0, 1, 0};
