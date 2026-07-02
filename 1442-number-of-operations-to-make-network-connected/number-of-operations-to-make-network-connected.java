@@ -1,52 +1,45 @@
-class DisjointSet {
-    List<Integer> parent = new ArrayList<>();
-    List<Integer> size = new ArrayList<>();
-    public DisjointSet(int n) {
-        for(int i=0; i<=n; i++) {
-            parent.add(i);
-            size.add(1);
-        }
-    }
-    public int findUlP(int node) {
-        if(node == parent.get(node)) return node;
-        int ulp = findUlP(parent.get(node));
-        parent.set(node, ulp);
-        return parent.get(node);
-    }
-    public void unionBySize(int u, int v) {
-        int ulp_u = findUlP(u);
-        int ulp_v = findUlP(v);
-        if(ulp_u == ulp_v) return;
-
-        if(size.get(ulp_u) < size.get(ulp_v)) {
-            parent.set(ulp_u, ulp_v);
-            size.set(ulp_v , size.get(ulp_u) + size.get(ulp_v));
-        } else {
-            parent.set(ulp_v, ulp_u);
-            size.set(ulp_u , size.get(ulp_u) + size.get(ulp_v));
-        }
-    }
-}
 class Solution {
+    public int findParent(int node, int[]parent){
+        if(parent[node]==node){
+            return node;
+        }
+        parent[node]= findParent(parent[node],parent);
+        return parent[node];
+    }
+
+    public void union_rank(int u,int v,int[] rank,int[] parent){
+        int pu = findParent(u,parent);
+        int pv = findParent(v,parent);
+        if(pu == pv) return;
+        if(rank[pu]<rank[pv]){
+            parent[pu]=pv;
+        }else if(rank[pv]<rank[pu]){
+            parent[pv]=pu;
+        }else{
+            parent[pv]=pu;
+            rank[pu]++;
+        }
+    }
+
     public int makeConnected(int n, int[][] connections) {
-        DisjointSet ds = new DisjointSet(n);
-        int cntExtras = 0;
-        int m = connections.length;
-        for(int i=0; i<m; i++) {
-            int u = connections[i][0];
-            int v = connections[i][1];
-            if(ds.findUlP(u) == ds.findUlP(v)) {
-                cntExtras++;
-            } else {
-                ds.unionBySize(u, v);
-            }
+        int[] parent = new int[n];
+        int[] rank = new int[n];
+        for(int i =0; i<n;i++){
+            parent[i]=i;
+            rank[i]=0;
         }
-        int cntC = 0;
-        for(int i=0; i<n; i++) {
-            if(ds.parent.get(i) == i) cntC++;
+
+        if(connections.length < n-1) return -1;
+
+        for(int[] edge: connections){
+            int u = edge[0];
+            int v = edge[1];
+            union_rank(u, v,rank,parent);   
         }
-        int ans = cntC - 1;
-        if(cntExtras >= ans) return ans;
-        return -1;
+        int component=0;
+        for(int i =0; i<n;i++){
+            if(parent[i]==i ) component++;
+        }
+        return component-1;
     }
 }
