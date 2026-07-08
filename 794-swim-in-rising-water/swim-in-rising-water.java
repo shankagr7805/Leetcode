@@ -1,37 +1,47 @@
-class Solution {
-    private int[] dr = {-1, 0, 1, 0};
-    private int[] dc = {0, 1, 0, -1};
-    private boolean posToReach(int[][] grid, int i, int j, int t, boolean[][] vis) {
-        int n = grid.length;
-        if(i<0 || i>=n || j<0 || j>=n || vis[i][j] == true || grid[i][j] > t) {
-            return false;
-        }
-        vis[i][j] = true;
-        if(i==n-1 && j==n-1) return true; 
-
-        for(int k=0; k<4; k++) {
-            int _i = i + dr[k];
-            int _j = j + dc[k];
-
-            if(posToReach(grid, _i, _j, t, vis)) return true;
-        }
-        return false;
+class Pair {
+    int a;
+    int b;
+    int c;
+    Pair(int _a, int _b, int _c) {
+        this.a = _a;
+        this.b = _b;
+        this.c = _c;
     }
-    public int swimInWater(int[][] grid) {
+}
+class Solution
+{
+    public int swimInWater(int[][] grid) 
+    {
         int n = grid.length;
-        int l = 0; int r = n*n - 1;
-        int result = 0;
+        int[][] dis = new int[n][n];
+        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((x, y) -> x.a - y.a);
+        for(int i=0; i<n; i++) Arrays.fill(dis[i], Integer.MAX_VALUE);
+        dis[0][0] = 0;
+        pq.add(new Pair(grid[0][0], 0, 0));
 
-        while(l <= r) {
-            int mid = l + (r - l) / 2;
-            boolean[][] vis = new boolean[n][n];
-            if(posToReach(grid, 0, 0, mid, vis)) {
-                result = mid;
-                r = mid - 1;
-            } else {
-                l = mid + 1;
+        int[] dr = {-1, 0, 1, 0};
+        int[] dc = {0, 1, 0, -1};
+
+        while(pq.size() != 0) {
+            int t = pq.peek().a;
+            int r = pq.peek().b;
+            int c = pq.peek().c;
+            pq.remove();
+            
+            if(r==n-1 && c==n-1) return t;
+
+            for(int k=0; k<4; k++) {
+                int nr = r + dr[k];
+                int nc = c + dc[k];
+                if (nr >= 0 && nr < n && nc >= 0 && nc < n) {
+                    int nt = Math.max(t, grid[nr][nc]);
+                    if(nt < dis[nr][nc]) {
+                        dis[nr][nc] = nt;
+                        pq.add(new Pair(nt, nr, nc));
+                    }
+                }
             }
         }
-        return result;
+        return -1;
     }
 }
