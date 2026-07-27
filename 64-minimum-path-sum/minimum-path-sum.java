@@ -1,23 +1,21 @@
-//TABULATION with TC:- O(M*N) and SC:-O(M*N)
-
 class Solution {
+    private int f(int[][] grid, int i, int j, int[][] dp) {
+        if(i==0 && j==0) return grid[0][0];
+        if (i < 0 || j < 0) return (int)1e9;
+        if(dp[i][j] != -1) return dp[i][j];
+        int up = f(grid, i-1, j, dp);
+        int left = f(grid, i, j-1, dp);
+        int ans = Math.min(up, left);
+
+        return dp[i][j] = grid[i][j] + ans;
+    }
     public int minPathSum(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
-        int[] prev = new int[n];
-        prev[0] = grid[0][0];
-        for(int j=1; j<n; j++) {
-            prev[j] = prev[j-1] + grid[0][j];
+        int[][] dp = new int[m][n];
+        for(int i=0; i<m; i++) {
+            Arrays.fill(dp[i], -1);
         }
-        for(int i=1; i<m; i++) {
-            int[] curr = new int[n];
-            curr[0] = prev[0] + grid[i][0];
-            for(int j=1; j<n; j++) {
-                curr[j] = Math.min(prev[j], curr[j-1]) + grid[i][j];
-            }
-            prev = curr;
-        }
-
-        return prev[n-1];
+        return f(grid, m-1, n-1, dp);
     }
 }
