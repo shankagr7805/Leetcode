@@ -1,22 +1,28 @@
 class Solution {
-    public int findTargetSumWays(int[] nums, int target) {
-        int total = 0;
-        for (int x : nums) total += x;
-
-        if (Math.abs(target) > total) return 0;
-        if ((target + total) % 2 != 0) return 0;
-
-        int sum = (target + total) / 2;
-
-        int[] dp = new int[sum + 1];
-        dp[0] = 1;
-
-        for (int num : nums) {
-            for (int j = sum; j >= num; j--) {
-                dp[j] += dp[j - num];
-            }
+    private int f(int[] nums, int i, int k, int[][] dp) {
+        if(i==0) {
+            if(k == 0 && nums[0] == 0) return 2;
+            if(k == 0 || nums[0] == k) return 1;
+            return 0;
         }
+        if(dp[i][k] != -1) return dp[i][k];
+        int add = f(nums, i-1, k, dp);
+        int sub = 0;
+        if(nums[i]<=k) sub = f(nums, i-1, k-nums[i], dp);
 
-        return dp[sum];
+        return dp[i][k] = add + sub;
+    }
+    public int findTargetSumWays(int[] nums, int target) {
+        int n = nums.length;
+        int sum = 0;
+        for(int i=0; i<n; i++) sum += nums[i];
+        if(sum < Math.abs(target)) return 0;
+        if((sum+target) % 2 != 0) return 0;
+
+        int j = (sum + target) / 2;
+        int k = Math.abs(j);
+        int[][] dp = new int[n][k+1];
+        for(int i=0; i<n; i++) Arrays.fill(dp[i], -1);
+        return f(nums, n-1, k, dp);
     }
 }
