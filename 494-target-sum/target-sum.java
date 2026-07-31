@@ -19,8 +19,7 @@ class Solution {
         if(sum < Math.abs(target)) return 0;
         if((sum+target) % 2 != 0) return 0;
 
-        int j = (sum + target) / 2;
-        int k = Math.abs(j);
+        int k = (sum + target) / 2;
         int[][] dp = new int[n][k+1];
         for(int i=0; i<n; i++) Arrays.fill(dp[i], -1);
         return f(nums, n-1, k, dp);
