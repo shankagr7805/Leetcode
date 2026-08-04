@@ -1,32 +1,18 @@
 class Solution {
-    static{
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try (FileWriter writer = new FileWriter("display_runtime.txt")) {
-                writer.write("0");
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
-        }));
-    }
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        int[][] after = new int[2][3];
-        for(int i=n-1; i>=0; i--){
-            int[][] curr = new int[2][3];
+        int[][][] dp = new int[n+1][2][3];
+        for(int i=n-1; i>=0; i--) {
             for(int j=0; j<2; j++) {
                 for(int k=1; k<3; k++) {
-                    // Buy
-                    if(j == 1) {            
-                        curr[j][k] = Math.max(-prices[i] + after[0][k] , after[1][k]);
-                    } else {                
-                        //Cannot Buy
-                        curr[j][k] = Math.max(prices[i] + after[1][k-1] , after[0][k]);
+                    if(j == 0) {
+                        dp[i][j][k] = Math.max(-prices[i] + dp[i+1][1][k] , dp[i+1][0][k]);
+                    } else {
+                        dp[i][j][k] = Math.max(prices[i] + dp[i+1][0][k-1] , dp[i+1][1][k]);
                     }
                 }
-            }
-            after = curr;
+            } 
         }
-        
-        return after[1][2];
+        return dp[0][0][2];
     }
 }
