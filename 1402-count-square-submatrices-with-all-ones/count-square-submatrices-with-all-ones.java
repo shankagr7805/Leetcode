@@ -12,16 +12,23 @@ class Solution {
     }
     public int countSquares(int[][] matrix) {
         int n = matrix.length;
-        int m = matrix[0].length;
+        int m = matrix[0].length; int sum = 0;
         int[][] dp = new int[n][m];
-        for(int i=0; i<n; i++) Arrays.fill(dp[i], -1);
-        int ans = 0;
 
         for(int i=0; i<n; i++) {
             for(int j=0; j<m; j++) {
-                ans += f(matrix, i, j, dp);
+                if(matrix[i][j] == 0) continue;
+
+                int l = 0; int u = 0; int dia = 0;
+                if(i>0) u = dp[i-1][j];
+                if(j>0) l = dp[i][j-1];
+                if(i>0 && j>0) dia = dp[i-1][j-1];
+
+                dp[i][j] = Math.min(l, Math.min(u, dia)) + 1;
+
+                sum += dp[i][j];
             }
         }
-        return ans;
+        return sum;
     }
 }
