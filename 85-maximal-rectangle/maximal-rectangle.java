@@ -2,7 +2,7 @@ class Solution {
     private int histogramMaxArea(int[] arr) {
         int n = arr.length;
         int maxA = 0;
-        Stack<Integer> st = new Stack<>();
+        Deque<Integer> st = new ArrayDeque<>();
 
         for(int i=0; i<=n; i++) {
             while(!st.isEmpty() && (i == n || arr[i] <= arr[st.peek()])) {
