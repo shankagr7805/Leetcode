@@ -1,44 +1,36 @@
 class Solution {
-    private int largestArea(int[] arr) {
-        Deque<Integer> st = new ArrayDeque<>();
-        int maxArea = 0; int n = arr.length;
+    private int histogramMaxArea(int[] arr) {
+        int n = arr.length;
+        int maxA = 0;
+        Stack<Integer> st = new Stack<>();
 
-        for(int i=0; i<n; i++) {
-            while(!st.isEmpty() && arr[st.peek()] > arr[i]) {
-                int el = st.peek();
+        for(int i=0; i<=n; i++) {
+            while(!st.isEmpty() && (i == n || arr[i] <= arr[st.peek()])) {
+                int h = arr[st.peek()];
                 st.pop();
-                int nse = i;
-                int pse = (st.isEmpty()) ? -1 : st.peek();
-
-                maxArea = Math.max(maxArea, arr[el] * (nse-pse-1));
+                int w = 0;
+                if(st.isEmpty()) w = i;
+                else w = i - st.peek() - 1;
+                maxA = Math.max(maxA, h*w);
             }
-            st.push(i);
+            if(i<n) st.push(i);
         }
-        while(!st.isEmpty()) {
-            int el = st.peek();
-            st.pop();
-            int nse = n;
-            int pse = (st.isEmpty()) ? -1 : st.peek();
-
-            maxArea = Math.max(maxArea, arr[el] * (nse-pse-1));
-        }
-        return maxArea;
+        return maxA;
     }
     public int maximalRectangle(char[][] matrix) {
-        int m = matrix.length; int n = matrix[0].length;
-        int[][] preMatrix = new int[m][n];
-        for(int i=0; i<n; i++) {
-            int preSum = 0;
-            for(int j=0; j<m; j++) {  
-                preSum = (matrix[j][i] == '1') ? preSum + 1 : 0;
-                preMatrix[j][i] = preSum;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[] arr = new int[n]; int maxA = 0;
+
+        for(int i=0; i<m; i++) {
+            for(int j=0; j<n; j++) {
+                if(matrix[i][j] == '1') arr[j]++;
+                else arr[j] = 0;
             }
-        }
-        int ans = 0;
-        for(int k=0; k<m; k++) {
-            ans = Math.max(ans , largestArea(preMatrix[k]));
+            int area = histogramMaxArea(arr);
+            maxA = Math.max(maxA, area);
         }
 
-        return ans;
+        return maxA;
     }
 }
